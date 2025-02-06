@@ -1,0 +1,3 @@
+
+loxilb_nerdctl: "https://github.com/containerd/nerdctl/releases/download/v{{ loxilb_nerdctl_version }}/nerdctl-{{ loxilb_nerdctl_version }}-linux-amd64.tar.gz"
+loxilb_nerdctl_sha: sha256:95ff850688a73eace7453f19e74bf4cc8a1f3e458eeb97ef7a6b74de9825df16

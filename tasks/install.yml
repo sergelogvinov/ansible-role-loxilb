@@ -1,0 +1,32 @@
+---
+
+- name: install containerd
+  become: true
+  apt:
+    name: "{{ loxilb_packages }}"
+    state: present
+  tags: ["loxilb"]
+
+- name: get nerdctl
+  become: true
+  get_url:
+    url: "{{ item.url }}"
+    dest: "/tmp/{{ item.name }}.tar.gz"
+    checksum: "{{ item.checksum }}"
+  with_items:
+    - { url: "{{ loxilb_nerdctl }}", checksum: "{{ loxilb_nerdctl_sha }}", name: nerdctl }
+  tags: ["loxilb"]
+
+- name: install nerdctl
+  become: true
+  unarchive:
+    remote_src: true
+    src: "/tmp/{{ item.name }}.tar.gz"
+    dest: "/usr/local/bin/"
+    owner: root
+    group: root
+    mode: "0755"
+    creates: "/usr/local/bin/{{ item.name }}"
+  with_items:
+    - { url: "{{ loxilb_nerdctl }}", name: nerdctl }
+  tags: ["loxilb"]

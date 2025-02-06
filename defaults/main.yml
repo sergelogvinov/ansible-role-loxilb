@@ -1,0 +1,9 @@
+---
+
+loxilb_version: latest
+loxilb_nerdctl_version: "2.0.3"
+
+loxilb_args: ""
+
+loxilb_privileged: -u root --net host --cap-add SYS_ADMIN --privileged
+loxilb_service: "/usr/local/bin/nerdctl run {{ loxilb_privileged }} --restart always -d -v /dev/log:/dev/log --name loxilb ghcr.io/loxilb-io/loxilb:{{ loxilb_version }}"

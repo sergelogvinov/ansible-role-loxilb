@@ -1,0 +1,29 @@
+---
+
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_distribution_release }}.yml"
+    - "../vars/empty.yml"
+  tags: ["loxilb"]
+
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_architecture }}.yml"
+    - "../vars/empty.yml"
+  tags: ["loxilb"]
+
+- include_tasks: install.yml
+  tags: ["loxilb"]
+
+- name: run loxilb
+  become: true
+  tags: ["loxilb"]
+  block:
+    - name: check loxilb
+      register: list
+      command: "/usr/local/bin/nerdctl ps --filter name=loxilb -q"
+      ignore_errors: true
+
+    - name: run loxilb
+      command: "{{ loxilb_service }} {{ loxilb_args }}"
+      when: list.stdout == ""
